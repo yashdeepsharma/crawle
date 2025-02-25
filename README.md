@@ -10,6 +10,8 @@ This repository contains a web crawler implemented using Python multi-threading.
 - User input for seed URLs
 - Fetches and parses web pages
 - Extracts links from web pages
+- Uses langchain for crawling
+- Saves crawled data into a CSV file
 
 ## Installation
 
@@ -33,3 +35,5 @@ Example:
 Enter seed URLs separated by commas: https://example.com,https://example.org
 Enter the maximum number of threads: 5
 ```
+
+The crawled data will be saved into a CSV file named `crawled_data.csv`.
