@@ -60,3 +60,25 @@ You can override the default configuration settings by providing command-line ar
 - `--seed_urls`: Seed URLs separated by commas
 - `--max_threads`: Maximum number of threads
 - `--output_file`: Output file name
+
+## Detailed Description
+
+The web crawler is designed to help users gather data from multiple web pages efficiently. By using multi-threading, it can crawl multiple web pages simultaneously, significantly reducing the time required to gather data. The primary use cases for this web crawler include:
+
+- Data collection for research purposes
+- Monitoring changes on specific web pages
+- Extracting links for further analysis
+- Building datasets for machine learning projects
+
+## Contributing
+
+We welcome contributions to improve the web crawler. If you would like to contribute, please follow these steps:
+
+1. Fork the repository
+2. Create a new branch for your feature or bugfix
+3. Make your changes
+4. Submit a pull request with a detailed description of your changes
+
+## Reporting Issues or Requesting Features
+
+If you encounter any issues or have feature requests, please open an issue on the GitHub repository. Provide as much detail as possible to help us understand and address your concerns.
