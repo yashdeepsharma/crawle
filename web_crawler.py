@@ -2,15 +2,18 @@ import requests
 from bs4 import BeautifulSoup
 import threading
 from queue import Queue
-import csv
+import json
 from langchain import LangChain
 import config
 
 class WebCrawler:
-    def __init__(self, seed_urls, max_threads=10, output_file='crawled_data.csv'):
+    def __init__(self, seed_urls, max_threads=10, output_file='crawled_data.json', business_name='', business_address='', business_phone=''):
         self.seed_urls = seed_urls
         self.max_threads = max_threads
         self.output_file = output_file
+        self.business_name = business_name
+        self.business_address = business_address
+        self.business_phone = business_phone
         self.visited_urls = set()
         self.url_queue = Queue()
         self.crawled_data = []
@@ -22,7 +25,8 @@ class WebCrawler:
                 self.visited_urls.add(url)
                 content = self.fetch_url(url)
                 links = self.parse_links(content)
-                self.crawled_data.append({'url': url, 'content': content})
+                business_info = self.extract_business_info(content)
+                self.crawled_data.append({'url': url, 'content': content, **business_info})
                 for link in links:
                     if link not in self.visited_urls:
                         self.url_queue.put(link)
@@ -44,12 +48,24 @@ class WebCrawler:
             links.add(a_tag['href'])
         return links
 
-    def save_to_csv(self):
-        keys = self.crawled_data[0].keys()
-        with open(self.output_file, 'w', newline='') as output_file:
-            dict_writer = csv.DictWriter(output_file, fieldnames=keys)
-            dict_writer.writeheader()
-            dict_writer.writerows(self.crawled_data)
+    def extract_business_info(self, content):
+        soup = BeautifulSoup(content, 'html.parser')
+        business_info = {
+            'business_name': '',
+            'business_address': '',
+            'business_phone': ''
+        }
+        if self.business_name:
+            business_info['business_name'] = soup.find(text=self.business_name)
+        if self.business_address:
+            business_info['business_address'] = soup.find(text=self.business_address)
+        if self.business_phone:
+            business_info['business_phone'] = soup.find(text=self.business_phone)
+        return business_info
+
+    def save_to_json(self):
+        with open(self.output_file, 'w') as output_file:
+            json.dump(self.crawled_data, output_file, indent=4)
 
     def run(self):
         for url in self.seed_urls:
@@ -64,4 +80,4 @@ class WebCrawler:
         for thread in threads:
             thread.join()
         
-        self.save_to_csv()
+        self.save_to_json()

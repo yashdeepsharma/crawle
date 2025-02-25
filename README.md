@@ -11,7 +11,8 @@ This repository contains a web crawler implemented using Python multi-threading.
 - Fetches and parses web pages
 - Extracts links from web pages
 - Uses langchain for crawling
-- Saves crawled data into a CSV file
+- Saves crawled data into a JSON file
+- Extracts business information (name, address, phone number, etc.) from web pages
 
 ## Installation
 
@@ -23,7 +24,7 @@ poetry install
 
 ## Usage
 
-To use the web crawler, run the `main.py` script and provide the seed URLs and maximum number of threads as input parameters:
+To use the web crawler, run the `main.py` script and provide the seed URLs, maximum number of threads, and output file as input parameters:
 
 ```
 python main.py --seed_urls <seed_urls> --max_threads <max_threads> --output_file <output_file>
@@ -32,10 +33,22 @@ python main.py --seed_urls <seed_urls> --max_threads <max_threads> --output_file
 Example:
 
 ```
-python main.py --seed_urls https://example.com,https://example.org --max_threads 5 --output_file crawled_data.csv
+python main.py --seed_urls https://example.com,https://example.org --max_threads 5 --output_file crawled_data.json
 ```
 
-The crawled data will be saved into the specified CSV file.
+To extract business information from websites like Justdial, provide the business information parameters as input:
+
+```
+python main.py --seed_urls <seed_urls> --max_threads <max_threads> --output_file <output_file> --business_name <business_name> --business_address <business_address> --business_phone <business_phone>
+```
+
+Example:
+
+```
+python main.py --seed_urls https://justdial.com --max_threads 5 --output_file business_data.json --business_name "Business Name" --business_address "Business Address" --business_phone "Business Phone"
+```
+
+The crawled data will be saved into the specified JSON file.
 
 ## Configuration
 
@@ -49,7 +62,14 @@ The default configuration settings are as follows:
 config = {
     'seed_urls': ['https://example.com', 'https://example.org'],
     'max_threads': 5,
-    'output_file': 'crawled_data.csv'
+    'output_file': 'crawled_data.json',
+    'business_info': {
+        'name': '',
+        'address': '',
+        'phone_number': ''
+    },
+    'business_type': 'restaurant',
+    'business_fields': ['name', 'address', 'phone_number']
 }
 ```
 
@@ -60,6 +80,9 @@ You can override the default configuration settings by providing command-line ar
 - `--seed_urls`: Seed URLs separated by commas
 - `--max_threads`: Maximum number of threads
 - `--output_file`: Output file name
+- `--business_name`: Business name to extract
+- `--business_address`: Business address to extract
+- `--business_phone`: Business phone number to extract
 
 ## Detailed Description
 
@@ -69,6 +92,7 @@ The web crawler is designed to help users gather data from multiple web pages ef
 - Monitoring changes on specific web pages
 - Extracting links for further analysis
 - Building datasets for machine learning projects
+- Extracting business information from websites like Justdial
 
 ## Contributing
 
