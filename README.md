@@ -82,3 +82,19 @@ We welcome contributions to improve the web crawler. If you would like to contri
 ## Reporting Issues or Requesting Features
 
 If you encounter any issues or have feature requests, please open an issue on the GitHub repository. Provide as much detail as possible to help us understand and address your concerns.
+
+## Code Quality
+
+To ensure code quality, we use `pylint` for static code analysis. You can run `pylint` to check the code quality by using the following command:
+
+```
+pylint <module_or_script_name>
+```
+
+For example, to check the code quality of `main.py`, run:
+
+```
+pylint main.py
+```
+
+Make sure to address any issues reported by `pylint` to maintain high code quality standards.
