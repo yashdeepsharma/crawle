@@ -26,14 +26,37 @@ poetry install
 To use the web crawler, run the `main.py` script and provide the seed URLs and maximum number of threads as input parameters:
 
 ```
-python main.py
+python main.py --seed_urls <seed_urls> --max_threads <max_threads> --output_file <output_file>
 ```
 
 Example:
 
 ```
-Enter seed URLs separated by commas: https://example.com,https://example.org
-Enter the maximum number of threads: 5
+python main.py --seed_urls https://example.com,https://example.org --max_threads 5 --output_file crawled_data.csv
 ```
 
-The crawled data will be saved into a CSV file named `crawled_data.csv`.
+The crawled data will be saved into the specified CSV file.
+
+## Configuration
+
+The web crawler uses a configuration file (`config.py`) to store default settings. You can modify the default settings in the `config.py` file or override them using command-line arguments.
+
+### Default Configuration
+
+The default configuration settings are as follows:
+
+```python
+config = {
+    'seed_urls': ['https://example.com', 'https://example.org'],
+    'max_threads': 5,
+    'output_file': 'crawled_data.csv'
+}
+```
+
+### Overriding Configuration
+
+You can override the default configuration settings by providing command-line arguments when running the `main.py` script. The available command-line arguments are:
+
+- `--seed_urls`: Seed URLs separated by commas
+- `--max_threads`: Maximum number of threads
+- `--output_file`: Output file name

@@ -4,11 +4,13 @@ import threading
 from queue import Queue
 import csv
 from langchain import LangChain
+import config
 
 class WebCrawler:
-    def __init__(self, seed_urls, max_threads=10):
+    def __init__(self, seed_urls, max_threads=10, output_file='crawled_data.csv'):
         self.seed_urls = seed_urls
         self.max_threads = max_threads
+        self.output_file = output_file
         self.visited_urls = set()
         self.url_queue = Queue()
         self.crawled_data = []
@@ -42,9 +44,9 @@ class WebCrawler:
             links.add(a_tag['href'])
         return links
 
-    def save_to_csv(self, filename):
+    def save_to_csv(self):
         keys = self.crawled_data[0].keys()
-        with open(filename, 'w', newline='') as output_file:
+        with open(self.output_file, 'w', newline='') as output_file:
             dict_writer = csv.DictWriter(output_file, fieldnames=keys)
             dict_writer.writeheader()
             dict_writer.writerows(self.crawled_data)
@@ -62,4 +64,4 @@ class WebCrawler:
         for thread in threads:
             thread.join()
         
-        self.save_to_csv('crawled_data.csv')
+        self.save_to_csv()
