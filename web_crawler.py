@@ -2,6 +2,8 @@ import requests
 from bs4 import BeautifulSoup
 import threading
 from queue import Queue
+import csv
+from langchain import LangChain
 
 class WebCrawler:
     def __init__(self, seed_urls, max_threads=10):
@@ -9,6 +11,7 @@ class WebCrawler:
         self.max_threads = max_threads
         self.visited_urls = set()
         self.url_queue = Queue()
+        self.crawled_data = []
 
     def crawl(self):
         while not self.url_queue.empty():
@@ -17,6 +20,7 @@ class WebCrawler:
                 self.visited_urls.add(url)
                 content = self.fetch_url(url)
                 links = self.parse_links(content)
+                self.crawled_data.append({'url': url, 'content': content})
                 for link in links:
                     if link not in self.visited_urls:
                         self.url_queue.put(link)
@@ -38,6 +42,13 @@ class WebCrawler:
             links.add(a_tag['href'])
         return links
 
+    def save_to_csv(self, filename):
+        keys = self.crawled_data[0].keys()
+        with open(filename, 'w', newline='') as output_file:
+            dict_writer = csv.DictWriter(output_file, fieldnames=keys)
+            dict_writer.writeheader()
+            dict_writer.writerows(self.crawled_data)
+
     def run(self):
         for url in self.seed_urls:
             self.url_queue.put(url)
@@ -50,3 +61,5 @@ class WebCrawler:
         
         for thread in threads:
             thread.join()
+        
+        self.save_to_csv('crawled_data.csv')
