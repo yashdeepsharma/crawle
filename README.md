@@ -18,7 +18,7 @@ This repository contains a web crawler implemented using Python multi-threading.
 To install the dependencies, run the following command:
 
 ```
-pip install -r requirements.txt
+poetry install
 ```
 
 ## Usage
